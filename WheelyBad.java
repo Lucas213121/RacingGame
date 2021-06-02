@@ -107,8 +107,9 @@ public class WheelyBad extends JFrame implements ActionListener
 						double d = Double.parseDouble(map.get(i).get(j));
 						double e = d % 1;
 						e *= 10;
-						e /= 1;
 						e += 0.5;
+						e = (int)e;
+					
 						e = Math.floor(e);
 						d /= d;
 						
@@ -156,6 +157,7 @@ public class WheelyBad extends JFrame implements ActionListener
 					
 					host.setVroom(true);
 				}
+				
 				if(e.getKeyCode() == e.VK_A)
 				{
 					
@@ -180,6 +182,7 @@ public class WheelyBad extends JFrame implements ActionListener
 					host.setVroom(false);
 					
 				}
+				
 				if(e.getKeyCode() == e.VK_A)
 				{
 					if(!right)
@@ -281,6 +284,7 @@ public class WheelyBad extends JFrame implements ActionListener
 		{		
 			character.update();
 		}
+		
 		for(Player p : players)
 		{
 			for(Block b : blocks)
