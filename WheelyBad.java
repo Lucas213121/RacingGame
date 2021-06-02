@@ -26,11 +26,6 @@ public void setHeldBy(Player p) {heldBy = p;}
 public Player getHeldBy() {return heldBy;}
 public void makeInvolentaryFriend(Player p) {holding = p;}
 public Player getInvolentaryFriend() {return holding;}
-
-
-
-
-
  */
 public class WheelyBad extends JFrame implements ActionListener
 {
@@ -107,9 +102,8 @@ public class WheelyBad extends JFrame implements ActionListener
 						double d = Double.parseDouble(map.get(i).get(j));
 						double e = d % 1;
 						e *= 10;
+						e /= 1;
 						e += 0.5;
-						e = (int)e;
-					
 						e = Math.floor(e);
 						d /= d;
 						
@@ -151,21 +145,23 @@ public class WheelyBad extends JFrame implements ActionListener
 			
 			public void keyPressed(KeyEvent e)
 			{
+				if (e.getKeyCode() == e.VK_W)
+				{
+					host.setAccelerating(true);
+				}
 				
 				if(e.getKeyCode() == e.VK_SPACE)
 				{
-					
 					host.setVroom(true);
 				}
-				
-				if(e.getKeyCode() == e.VK_A)
+				else if(e.getKeyCode() == e.VK_A)
 				{
 					
 					if(!right)
 						host.setDr(-turn);
 					left = true;
 				}
-				if(e.getKeyCode() == e.VK_D)
+				else if(e.getKeyCode() == e.VK_D)
 				{
 					if(!left)
 						host.setDr(turn);
@@ -175,15 +171,17 @@ public class WheelyBad extends JFrame implements ActionListener
 			}
 			public void keyReleased(KeyEvent e) 
 			{
-				
+				if (e.getKeyCode() == e.VK_W)
+				{
+					host.setAccelerating(false);
+				}
 				if(e.getKeyCode() == e.VK_SPACE)
 				{
 					
 					host.setVroom(false);
 					
 				}
-				
-				if(e.getKeyCode() == e.VK_A)
+				else if(e.getKeyCode() == e.VK_A)
 				{
 					if(!right)
 					{
@@ -195,7 +193,7 @@ public class WheelyBad extends JFrame implements ActionListener
 					}
 					left = false;
 				}
-				if(e.getKeyCode() == e.VK_D)
+				else if(e.getKeyCode() == e.VK_D)
 				{
 					if(!left)
 					{
@@ -284,7 +282,6 @@ public class WheelyBad extends JFrame implements ActionListener
 		{		
 			character.update();
 		}
-		
 		for(Player p : players)
 		{
 			for(Block b : blocks)

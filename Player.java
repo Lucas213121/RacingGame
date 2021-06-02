@@ -1,4 +1,3 @@
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -18,11 +17,12 @@ public class Player extends JComponent implements Updatable
 	
 	private long start = System.currentTimeMillis();
 	private int w = 15, h = 25; 
-	private double x, y, dx, dy, dr, rotation;
+	private double x, y, dx, dy, dr, rotation, velocity;
 	private Color color;
 	private JLabel timerTag;
 	private JFrame frame;
-	private boolean vroom;
+	private boolean vroom, accelerating;
+	
 	public Player(double x, double y, Color c, JFrame frame)
 	{
 		
@@ -63,6 +63,9 @@ public class Player extends JComponent implements Updatable
 	public void setX(double i) { x = i;}
 	public void setY(double i) { y = i;}
 	
+	public void setAccelerating(Boolean condition) {accelerating = condition;}
+	public boolean getAccelerating() {return accelerating;}
+	
 	public void setVroom(boolean i) { vroom = i;}
 	public boolean getVroom() { return vroom;}
 	
@@ -79,10 +82,11 @@ public class Player extends JComponent implements Updatable
 	public void update()
 	{
 		
-		int multi = 6;
-		rotation += dr * 5;
-		dx = Math.sin(-rotation); // /2;
-		dy = Math.cos(-rotation);
+		rotation += dr * 2;
+
+		
+		dx = Math.sin(-rotation) * velocity; // /2;
+		dy = Math.cos(-rotation) * velocity;
 		
 		
 		double max = 1;
@@ -92,16 +96,16 @@ public class Player extends JComponent implements Updatable
 			dx *= 2;
 			dy *= 2;
 		}
-		if(Math.abs(dx) > max * Math.sin(-rotation))
-		{
-			dx = max * Math.sin(-rotation);//* Math.abs(dx)/dx;
-		}
-		if(Math.abs(dy) > max * Math.cos(-rotation))
-		{
-			dy = max * Math.cos(-rotation);//  * Math.abs(dy)/dy;
-		}
-		x += dx * multi;
-		y += dy * multi;
+//		if(Math.abs(dx) > max * Math.sin(-rotation))
+//		{
+//			dx = max * Math.sin(-rotation);//* Math.abs(dx)/dx;
+//		}
+//		if(Math.abs(dy) > max * Math.cos(-rotation))
+//		{
+//			dy = max * Math.cos(-rotation);//  * Math.abs(dy)/dy;
+//		}
+		x += dx;
+		y += dy;
 		timerTag.setText(""+((-start+System.currentTimeMillis()) / 1000.0));
 		/*
 		if(x < - 30)
@@ -124,8 +128,24 @@ public class Player extends JComponent implements Updatable
 		}
 		
 		*/
-		//this.setLocation((int)(x), (int)(y)); 
+		//this.setLocation((int)(x), (int)(y));
+		
+		if (!accelerating && !vroom)
+		{
+			velocity -= .02;
+		}
+		else if (velocity < 2)
+			velocity += .01;
+		if (velocity <= 0)
+			velocity = 0;
+		//System.out.println("Vel: " + velocity);
+		
 		this.setPos(x, y);
+		
+		
+		
+		
+		
 		//timerTag.setLocation((int)x + w/2 - timerTag.getWidth()/2, (int)y - 20);
 		
 		repaint();
