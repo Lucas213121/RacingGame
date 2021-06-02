@@ -33,7 +33,7 @@ public class Player extends JComponent implements Updatable
 		
 		timerTag = new JLabel("Loading...", SwingConstants.RIGHT);
 		
-		timerTag.setFont(new Font("Helvetica", Font.BOLD, 13));
+		timerTag.setFont(new Font("Courier", Font.BOLD, 13));
 		timerTag.setSize(100,20);
 		rotation = 0;
 		timerTag.setForeground(Color.red);
@@ -82,7 +82,7 @@ public class Player extends JComponent implements Updatable
 	public void update()
 	{
 		
-		rotation += dr * 2;
+		rotation += dr * 4;
 
 		
 		dx = Math.sin(-rotation) * velocity; // /2;
@@ -106,7 +106,10 @@ public class Player extends JComponent implements Updatable
 //		}
 		x += dx;
 		y += dy;
-		timerTag.setText(""+((-start+System.currentTimeMillis()) / 1000.0));
+		//(-start+System.currentTimeMillis()) / 1000.0
+		String i = String.format("%.3f",(-start+System.currentTimeMillis()) / 1000.0);  
+		
+		timerTag.setText(i);
 		/*
 		if(x < - 30)
 		{
@@ -132,11 +135,11 @@ public class Player extends JComponent implements Updatable
 		
 		if (!accelerating && !vroom)
 		{
-			velocity -= .02;
+			velocity -= .2;
 		}
-		else if (velocity < 2)
-			velocity += .01;
-		if (velocity <= 0)
+		else if (velocity < 8)
+			velocity += .2;
+		if (velocity < 0)
 			velocity = 0;
 		//System.out.println("Vel: " + velocity);
 		
