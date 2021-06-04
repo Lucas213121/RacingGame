@@ -92,6 +92,12 @@ public class WheelyBad extends JFrame implements ActionListener
 					add(b);
 					blocks.add(b);
 				}
+				if((map.get(i)).get(j).equals("f"))
+				{
+					Block b = new Block(j*w - 100, i*w - 2100, w, w, Color.GREEN);
+					add(b);
+					blocks.add(b);
+				}
 				try
 				{
 					//map.get(i).get(j)
@@ -292,8 +298,14 @@ public class WheelyBad extends JFrame implements ActionListener
 			{
 				//center.setPosition(0,0);
 				center.setObjectColor(Color.MAGENTA);
+				
 				if(b.getRect().contains(p.getPos().x + 300, p.getPos().y + 300))
 				{
+					if(b.getColor().equals(Color.GREEN))
+					{
+						p.setTimer(false);
+						p.setRecord();
+					}
 					b.setObjectColor(Color.RED);
 					p.setObjectColor(Color.RED);
 					p.setR(p.getR()+Math.PI);

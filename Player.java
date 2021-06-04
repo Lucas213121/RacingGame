@@ -8,6 +8,13 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
+
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -19,9 +26,10 @@ public class Player extends JComponent implements Updatable
 	private int w = 15, h = 25; 
 	private double x, y, dx, dy, dr, rotation, velocity;
 	private Color color;
-	private JLabel timerTag;
+	private JLabel timerTag, recordTag;
 	private JFrame frame;
 	private boolean vroom, accelerating;
+	private boolean timer = true;
 	
 	public Player(double x, double y, Color c, JFrame frame)
 	{
@@ -34,14 +42,36 @@ public class Player extends JComponent implements Updatable
 		timerTag = new JLabel("Loading...", SwingConstants.RIGHT);
 		
 		timerTag.setFont(new Font("Courier", Font.BOLD, 13));
-		timerTag.setSize(100,20);
+		timerTag.setSize(100,40);
 		rotation = 0;
 		timerTag.setForeground(Color.red);
+		
+		
+		Scanner read = null;
+		File myFile = new File("Record.txt");
+		try
+		{
+			read = new Scanner(myFile);
+		}
+		catch (FileNotFoundException e) 
+		{
+			e.printStackTrace();
+		}
+		double recordTime = 100.000;
+		while(read.hasNext())
+		{
+			recordTime = Double.parseDouble(read.next());
+		}
+		recordTag = new JLabel(String.format("%.3f",(recordTime), SwingConstants.RIGHT);
+		
+		recordTag.setFont(new Font("Courier", Font.BOLD, 13));
+		recordTag.setSize(100,20);
+		recordTag.setForeground(Color.red);
 		//timerTag.setLocation(100, 100);
 		color = c;
 		this.frame = frame;
 		frame.add(timerTag, 0);
-		
+		frame.add(recordTag, 0);
 	}
 	public Rectangle getHitbox()
 	{
@@ -51,6 +81,9 @@ public class Player extends JComponent implements Updatable
 	
 	public void setName(String s) { timerTag.setText(s);}
 	public String getName() {return timerTag.getText();}
+	
+	public void setTimer(boolean b) { timer = b;}
+	
 	
 	public void setDr(double dr) { this.dr = dr;}
 	public double getDr() {return dr;}
@@ -109,7 +142,10 @@ public class Player extends JComponent implements Updatable
 		//(-start+System.currentTimeMillis()) / 1000.0
 		String i = String.format("%.3f",(-start+System.currentTimeMillis()) / 1000.0);  
 		
-		timerTag.setText(i);
+		if(timer)
+		{
+			timerTag.setText(i);
+		}
 		/*
 		if(x < - 30)
 		{
@@ -175,6 +211,33 @@ public class Player extends JComponent implements Updatable
 		g.setColor(color);
 		((Graphics2D) g).fill(s);
 		
+	}
+	public void setRecord()
+	{
+		//I want to write this num to a file
+		Scanner write = null;
+		FileWriter myFile = null;
+		try {
+			myFile = new FileWriter("Record.txt");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try 
+		{
+			if(Double.parseDouble(timerTag.getText()) < Double.parseDouble(recordTag.getText()) )
+				myFile.write(""+ timerTag.getText());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    try {
+			myFile.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	public double getR() 
 	{

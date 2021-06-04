@@ -23,7 +23,8 @@ public class Block extends JComponent
 		color = c;
 		rect = new Rectangle(0,0,w,h);
 	}
-
+	public Color getColor() {return color;}
+	
 	public Rectangle getRect()
 	{
 		return new Rectangle((int)(absX + relX), (int)(absY + relY), this.getWidth(), this.getHeight());
